@@ -3,17 +3,17 @@
 #
 cmake_minimum_required (VERSION 3.16)
 
-project ("Lab#2: Embedded System behavior with introduction on Jetson TX2 and Stack Use")
+project ("Lab#3")
 
-include(FetchContent)
-FetchContent_Declare(
-  JetsonGPIO 
-  GIT_REPOSITORY https://github.com/pjueon/JetsonGPIO.git 
-  GIT_TAG master
-)
-FetchContent_MakeAvailable(JetsonGPIO)
-
-
+set(SRC "src/JHLEDBackpack.cpp" "src/JHLEDBackpack.h")
 # Add source to this project's executable.
-add_executable (lab2 "gpio_button.c" "jetsonGPIO.c" "jetsonGPIO.h")# "CMakeProject1.h")
-target_link_libraries(lab2 JetsonGPIO::JetsonGPIO)
+add_executable(lab3_task1 ${SRC} "task1.cpp" )
+add_executable(lab3_task2 ${SRC} "task2.cpp" )
+
+target_include_directories(lab3_task1 PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR})
+target_link_directories(lab3_task1 PUBLIC ${CMAKE_SOURCE_DIR})
+target_link_libraries(lab3_task1 PUBLIC i2c)
+
+target_include_directories(lab3_task2 PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_link_directories(lab3_task2 PUBLIC ${CMAKE_SOURCE_DIR})
+target_link_libraries(lab3_task2 PUBLIC i2c)
