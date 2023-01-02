@@ -125,10 +125,10 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 
 		// TASK 1
-//		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
-//		HAL_Delay(100);
-//		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
-//		HAL_Delay(100);
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+		HAL_Delay(100);
+		HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+		HAL_Delay(100);
 // TASK 2
 		/*
 		 lcd = Lcd_create(ports, pins, GPIOD, RS_Pin, GPIOD, EN_Pin, LCD_4_BIT_MODE);
@@ -159,46 +159,46 @@ int main(void) {
 		 }
 		 */
 		// TASK 3
-		lcd = Lcd_create(ports, pins, GPIOD, RS_Pin, GPIOD, EN_Pin, LCD_4_BIT_MODE);
-		HAL_Delay(1000);
-
-		// prints out the lab group number at specified row and column
-		Lcd_cursor(&lcd, 0, 0);
-		Lcd_string(&lcd, "Alexander");
-		Lcd_cursor(&lcd, 1, 0);
-		Lcd_string(&lcd, "Campbell");
-		HAL_Delay(1000);
-		Lcd_clear(&lcd);
-
-		Lcd_cursor(&lcd, 0, 0);
-		Lcd_string(&lcd, "Atharshan");
-		Lcd_cursor(&lcd, 1, 0);
-		Lcd_string(&lcd, "Kennedy");
-		HAL_Delay(1000);
-		Lcd_clear(&lcd);
-
-		Lcd_cursor(&lcd, 0, 0);
-		Lcd_string(&lcd, "William");
-		Lcd_cursor(&lcd, 1, 0);
-		Lcd_string(&lcd, "Robinson");
-		HAL_Delay(1000);
-		Lcd_clear(&lcd);
-
-
-		Lcd_cursor(&lcd, 0, 0);
-		Lcd_string(&lcd, "Tiwaloluwa");
-		Lcd_cursor(&lcd, 1, 0);
-		Lcd_string(&lcd, "Ojo");
-		HAL_Delay(1000);
-		Lcd_clear(&lcd);
-
-
-		Lcd_cursor(&lcd, 0, 0);
-		Lcd_string(&lcd, "Nicole");
-		Lcd_cursor(&lcd, 1, 0);
-		Lcd_string(&lcd, "Okeke");
-		HAL_Delay(1000);
-		Lcd_clear(&lcd);
+//		lcd = Lcd_create(ports, pins, GPIOD, RS_Pin, GPIOD, EN_Pin, LCD_4_BIT_MODE);
+//		HAL_Delay(1000);
+//
+//		// prints out the lab group number at specified row and column
+//		Lcd_cursor(&lcd, 0, 0);
+//		Lcd_string(&lcd, "Alexander");
+//		Lcd_cursor(&lcd, 1, 0);
+//		Lcd_string(&lcd, "Campbell");
+//		HAL_Delay(1000);
+//		Lcd_clear(&lcd);
+//
+//		Lcd_cursor(&lcd, 0, 0);
+//		Lcd_string(&lcd, "Atharshan");
+//		Lcd_cursor(&lcd, 1, 0);
+//		Lcd_string(&lcd, "Kennedy");
+//		HAL_Delay(1000);
+//		Lcd_clear(&lcd);
+//
+//		Lcd_cursor(&lcd, 0, 0);
+//		Lcd_string(&lcd, "William");
+//		Lcd_cursor(&lcd, 1, 0);
+//		Lcd_string(&lcd, "Robinson");
+//		HAL_Delay(1000);
+//		Lcd_clear(&lcd);
+//
+//
+//		Lcd_cursor(&lcd, 0, 0);
+//		Lcd_string(&lcd, "Tiwaloluwa");
+//		Lcd_cursor(&lcd, 1, 0);
+//		Lcd_string(&lcd, "Ojo");
+//		HAL_Delay(1000);
+//		Lcd_clear(&lcd);
+//
+//
+//		Lcd_cursor(&lcd, 0, 0);
+//		Lcd_string(&lcd, "Nicole");
+//		Lcd_cursor(&lcd, 1, 0);
+//		Lcd_string(&lcd, "Okeke");
+//		HAL_Delay(1000);
+//		Lcd_clear(&lcd);
 
 	}
 	/* USER CODE END 3 */
