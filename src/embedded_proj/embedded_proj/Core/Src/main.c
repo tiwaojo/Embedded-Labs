@@ -68,6 +68,16 @@ void MX_USB_HOST_Process(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+double x_position=0;
+double y_position=0;
+double z_position=0;
+double magnitude=0;
+double change_in_magnitude=0;
+double last_magnitude = 0;
+int steps_counter=-1;
+int pedometer_threshold=1000;
+int16_t accelVals[3];
+
 /* USER CODE END 0 */
 
 /**
@@ -90,7 +100,7 @@ int main(void)
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+//  SystemClock_Config();
 
 /* Configure the peripherals common clocks */
   PeriphCommonClock_Config();
@@ -107,6 +117,88 @@ int main(void)
   MX_SPI1_Init();
   MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
+
+  /* Read Acceleration*/
+        BSP_ACCELERO_GetXYZ(Buffer);
+
+        /* Set X and Y positions */
+        X_Offset = Buffer[0];
+        Y_Offset = Buffer[1];
+
+        /* Update New autoreload value in case of X or Y acceleration*/
+        /* Basic acceleration X_Offset and Y_Offset are divide by 40 to fir with ARR range */
+        NewARR_X = TIM_ARR - ABS(X_Offset/40);
+        NewARR_Y = TIM_ARR - ABS(Y_Offset/40);
+
+        /* Calculation of Max acceleration detected on X or Y axis */
+        Temp_X = ABS(X_Offset/40);
+        Temp_Y = ABS(Y_Offset/40);
+        MaxAcceleration = MAX_AB(Temp_X, Temp_Y);
+
+        if(MaxAcceleration != 0)
+        {
+
+          /* Reset CNT to a lowest value (equal to min CCRx of all Channels) */
+          __HAL_TIM_SET_COUNTER(&htim4,(TIM_ARR-MaxAcceleration)/2);
+
+          if (X_Offset < ThreadholdAcceleroLow)
+          {
+
+            /* Sets the TIM4 Capture Compare for Channel1 Register value */
+            /* Equal to NewARR_X/2 to have duty cycle equal to 50% */
+            __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, NewARR_X/2);
+
+            /* Time base configuration */
+            __HAL_TIM_SET_AUTORELOAD(&htim4, NewARR_X);
+
+            /* Enable TIM4 Capture Compare Channel1 */
+            HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+
+          }
+          else if (X_Offset > ThreadholdAcceleroHigh)
+          {
+
+            /* Sets the TIM4 Capture Compare for Channel3 Register value */
+            /* Equal to NewARR_X/2 to have duty cycle equal to 50% */
+            __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_3, NewARR_X/2);
+
+            /* Time base configuration */
+            __HAL_TIM_SET_AUTORELOAD(&htim4, NewARR_X);
+
+            /* Enable TIM4 Capture Compare Channel3 */
+            HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+
+          }
+          if (Y_Offset > ThreadholdAcceleroHigh)
+          {
+
+            /* Sets the TIM4 Capture Compare for Channel4 Register value */
+            /* Equal to NewARR_Y/2 to have duty cycle equal to 50% */
+            __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_4,NewARR_Y/2);
+
+            /* Time base configuration */
+            __HAL_TIM_SET_AUTORELOAD(&htim4, NewARR_Y);
+
+            /* Enable TIM4 Capture Compare Channel4 */
+            HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
+
+          }
+          else if (Y_Offset < ThreadholdAcceleroLow)
+          {
+
+            /* Sets the TIM4 Capture Compare for Channel2 Register value */
+            /* Equal to NewARR_Y/2 to have duty cycle equal to 50% */
+            __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_2, NewARR_Y/2);
+
+            /* Time base configuration */
+            __HAL_TIM_SET_AUTORELOAD(&htim4, NewARR_Y);
+
+            /* Enable TIM4 Capture Compare Channel2 */
+            HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+
+          }
+        }
+        Counter = 0x00;
 
   /* USER CODE END 2 */
 
